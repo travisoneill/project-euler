@@ -33,7 +33,7 @@ def next_prime(n):
 
 def make(num, stop):
     if num == stop:
-        #FUN
+        #ONE LINER
         # [[n//100, n//10 % 10, n%10] for n in range(1, 1000) if n%17 == 0 and len(Counter(str(n))) == len(str(n))]
         #FAST
         n = stop
