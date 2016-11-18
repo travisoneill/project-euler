@@ -7,13 +7,6 @@ def unique(lst):
     else:
         return None
 
-def mult_list(n):
-    inc = n
-    while n < 1000:
-        l = [n // 100, n // 10 % 10, n % 10]
-        if unique(l): yield l
-        n += inc
-
 def check(l, mod):
     n = l[0] * 100 + l[1] * 10 + l[2]
     return n % mod
@@ -52,11 +45,11 @@ def make(num, stop):
                 if dig and check(dig, num) == 0:
                     yield dig
 
-# #RUN
-# result = 0
-# for arr in make(1, 17):
-#     result += number(arr)
-# print(result)
+#RUN
+result = 0
+for arr in make(1, 17):
+    result += number(arr)
+print(result)
 
 #BENCHMARK
 # def bm():

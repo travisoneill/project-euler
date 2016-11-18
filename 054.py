@@ -73,7 +73,7 @@ def compare(hand1, hand2):
         elif score1[i] < score2[i]:
             return 0
 
-with open('54.txt', 'r') as f:
+with open('054.txt', 'r') as f:
     count = 0
     for line in f:
         cards = line.split()
