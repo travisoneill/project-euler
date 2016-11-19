@@ -1,9 +1,8 @@
 from math import sqrt
 from time import time
 
-#ONE LINER (extremely slow)
+# ONE LINER (extremely slow)
 # print(sum([x for x in range(2, 2000000) if not [y for y in range(2, int(sqrt(x))+1) if x % y == 0]]))
-
 
 prime_cache = []
 def is_prime_dynamic(n):
@@ -21,9 +20,8 @@ def primes_dynamic(n):
         if is_prime_dynamic(i): yield i
         i += 1 + (i % 2)
 
-#RUN
-print(primes_dynamic(2000000))        
-
+# RUN
+print(primes_dynamic(2000000))
 
 def is_prime(n):
     if n == 2: return True
