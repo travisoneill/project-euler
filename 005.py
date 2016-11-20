@@ -21,12 +21,13 @@ def f_count(n):
 
 max_merge = lambda d1, d2: defaultdict(int, {k: max(d1[k], d2[k]) for d in [d1, d2] for k, v in d.items()})
 
-d = defaultdict(int, {})
-for n in range(2, 21):
-    d = max_merge(d, f_count(n))
+
 
 #BENCHMARK
 def fast():
+    d = defaultdict(int, {})
+    for n in range(2, 21):
+        d = max_merge(d, f_count(n))
     reduce(lambda x, y: x * y, [k ** v for k, v in d.items()])
 
 def fun():
