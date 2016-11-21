@@ -6,7 +6,7 @@ from time import time
 #ONE LINER
 print(reduce(lambda a, b: a * b, [n ** int(log(20, n)) for n in (x for x in range(2, 20) if not [y for y in range(2, int(sqrt(x))+1) if x % y == 0])]))
 
-#FAST
+#OLD APPROACH
 def f_count(n):
     count = defaultdict(int, {})
     i = 2
