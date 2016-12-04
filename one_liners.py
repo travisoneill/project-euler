@@ -23,15 +23,19 @@ problem9 = lambda n: [(a, int(sqrt(c**2 - a**2)), c) for a in range(1, int(0.3*n
 
 problem10 = lambda n: sum([x for x in range(2, n) if not [y for y in range(2, int(sqrt(x))+1) if x % y == 0]])
 
+problem38 = lambda: [ n*100002 for n in reversed(range(9182, 10000)) if max(Counter(str(n*100002)).values()) == 1 and not Counter(str(n*100002))['0'] ][0]
+
 problem45 = lambda arbitrary: [n*(2*n -1) for n in range(144, arbitrary) if sqrt(48*n**2 - 24*n + 1) % 6 == 5][0]
 
-def euler(problem):
+def get_lambda(problem):
     def wrapper(num):
         arg = inputs[num]
         func = globals()['problem{}'.format(num)]
-        func(arg)
+        return func(arg)
     return wrapper
 
-@euler
-def solve(num):
+@get_lambda
+def euler(num):
     pass
+
+@
