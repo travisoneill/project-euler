@@ -1,5 +1,5 @@
 from collections import deque
-
+from time import time
 # Lower bound on length is 21 from example.  Therefore highest possible average
 # of sequence is 50000.
 
@@ -32,11 +32,10 @@ def find_max(n):
         if s > n:
             return i
 
-def p_range(n, limit):
+def p_range(window, limit):
     '''returns first prime < limit that can be made by the sum of n consecutive primes'''
     primes = deque()
     count = 0
-    window = n
     for i, n in enumerate(prime_gen()):
         count += n
         primes.append(n)
@@ -53,3 +52,13 @@ def search(limit):
     for n in reversed(range(max_possible)):
         x = p_range(n, limit)
         if x: return x
+
+def run():
+    search(1000000)
+
+#BENCHMARK
+def bm(n):
+    t0 = time()
+    search(n)
+    t1 = time()
+    print(t1-t0)
