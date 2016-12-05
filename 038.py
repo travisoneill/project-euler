@@ -16,10 +16,6 @@ def is_pandigital(n):
         n //= 10
     return True
 
-for n in range(918273645, 1000000000):
-    if is_pandigital(n):
-        print(n)
-
 for n in reversed(range(9182, 10000)):
     if is_pandigital(n*100002):
         print(n*100002)
