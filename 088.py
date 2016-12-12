@@ -30,27 +30,39 @@ def construct(n):
         else:
             f = p[0]
             combs = cache[i//f]
-            res = set()
-            for tup in combs:
-                res.add( tuple(sorted(list(tup + (f,)))) )
-                # if len(tup) == 1: continue
-                for j in range(len(tup)):
-                    lst = list(tup[:])
-                    lst[j] *= f
-                    lst.sort()
-                    res.add(tuple(lst))
+            # print(combs, i)
+            res = add_factor(combs, f)
+            # print(res)
+            # for tup in combs:
+            #     res.add( tuple(sorted(list(tup + (f,)))) )
+            #     # if len(tup) == 1: continue
+            #     for j in range(len(tup)):
+            #         lst = list(tup[:])
+            #         lst[j] *= f
+            #         lst.sort()
+            #         res.add(tuple(lst))
             for tup in res:
                 v = value(tup)
                 if v <= n and not result[v]:
                     result[v] = i
                     count += 1
+                    # print(count, result)
             cache[i] = list(res)
+            if i > 2*n: break
         i += 1
     # print(cache)
     return result
 
-def add_factor():
-    pass
+def add_factor(factors_list, new_factor):
+    new_factors_list = set()
+    for factor_set in factors_list:
+        initial_factors = list(factor_set)
+        new_factors_list.add( tuple( [new_factor] + initial_factors ) )
+        for idx in range(len(factor_set)):
+            new_factor_set = initial_factors[:]
+            new_factor_set[idx] *= new_factor
+            new_factors_list.add( tuple(sorted(new_factor_set)) )
+    return new_factors_list
 
 
 def run(n):
