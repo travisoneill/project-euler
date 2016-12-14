@@ -1,24 +1,45 @@
 from euler_utils_primesandfactors import is_prime
-from collections import defaultdict
 # f = lambda n, a, b: n**2 + a*n + b
 
 quadratic = lambda a, b: eval('lambda n: n**2 + {}*n + {}'.format(a, b))
 
-def run(limit):
-    primes = defaultdict(lambda: False, { n: True for n in range(limit*2) if is_prime(n) })
+quadratic = lambda a, b, n: n**2 + a*n + b
 
-    def test(func):
+
+
+def run(limit):
+    primes = {}
+    def primetest(n):
+        if n in primes:
+            return primes[n]
+        else:
+            primes[n] = is_prime(n)
+            return primes[n]
+
+    def test(a, b):
         count, n = 0, 0
-        while primes[func(n)]:
+        while primetest(quadratic(a, b, n)):
             n, count = n+1, count+1
         return count
 
-    longest = 40
-    for b in reversed(list(primes.keys())):
-        if b > limit: continue
+    longest = 0
+    best_a, best_b = None, None
+    for b in range(1, limit+1):
+        if not primetest(b): continue
         for a in range(-limit, limit+1):
-            f = quadratic(a, b)
-            if primes[f(longest)] and primes[f(longest-1)]:
-                t = test(f)
-                if(t > longest): print(a, b, t)
-                longest = max(longest, t)
+            if not a%2: continue
+            p1, p2 = quadratic(a, b, longest), quadratic(a,b,longest-1)
+            if primetest(p1) and primetest(p2):
+                t = test(a, b)
+                if(t > longest):
+                    longest = t
+                    best_a, best_b = a, b
+    print(best_a, best_b, longest)
+    return best_a * best_b
+
+from time import time
+def bm(n):
+    t0 = time()
+    run(n)
+    t1 = time()
+    print(t1-t0)
