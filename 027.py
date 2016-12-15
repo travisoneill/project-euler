@@ -1,13 +1,7 @@
 from euler_utils_primesandfactors import is_prime
-# f = lambda n, a, b: n**2 + a*n + b
-
-quadratic = lambda a, b: eval('lambda n: n**2 + {}*n + {}'.format(a, b))
-
-quadratic = lambda a, b, n: n**2 + a*n + b
-
-
 
 def run(limit):
+    quadratic = lambda a, b, n: n**2 + a*n + b
     primes = {}
     def primetest(n):
         if n in primes:
@@ -35,11 +29,4 @@ def run(limit):
                     longest = t
                     best_a, best_b = a, b
     print(best_a, best_b, longest)
-    return best_a * best_b
-
-from time import time
-def bm(n):
-    t0 = time()
-    run(n)
-    t1 = time()
-    print(t1-t0)
+    return best_a * best_b   
