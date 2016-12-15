@@ -1,6 +1,6 @@
 from euler_utils_primesandfactors import is_prime
 
-def run(n):
+def run():
     primes = {}
     def primetest(n):
         if n in primes:
@@ -12,11 +12,9 @@ def run(n):
     def is_truncatable_prime(n):
         power = 1
         while n % 10**power != n:
-            # print(n % 10**power)
             if not primetest(n % 10**power): return False
             power += 1
         while n > 0:
-            # print(n)
             if not primetest(n): return False
             n //= 10
         return True
