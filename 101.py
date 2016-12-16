@@ -17,6 +17,7 @@ def estimate_next_value(mtrx):
     return mtrx[0][-1]
 
 polynomial = lambda n: 1 - n + n**2 - n**3 + n**4 - n**5 + n**6 - n**7 + n**8 - n**9 + n**10
+
 def sum_of_fit(polynomial):
     fit_sum = 0
     i = 2
