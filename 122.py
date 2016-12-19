@@ -56,8 +56,7 @@ class Tree:
         max_depth = max(self.level_map.keys())
         leaves = self.level_map[max_depth]
         for leaf in leaves:
-            path = leaf.get_path()
-            for n in path:
+            for n in reversed(leaf.get_path()):
                 node = Node(leaf.value + n, leaf)
                 self.add(node, max_depth+1)
 
@@ -82,3 +81,10 @@ def run(n):
         t.trim(lambda x: x <= n)
         return check()
     return check()
+
+def bm(n):
+    from time import time
+    t0 = time()
+    run(n)
+    t1 = time()
+    print(t1-t0)
