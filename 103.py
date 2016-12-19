@@ -5,7 +5,6 @@ def is_special(sett):
     lst = sorted(sett)
     ratio = lst[-1] / lst[0]
     for i in range(len(lst) // 2):
-        # print(lst[:i+2], lst[-(i+1):])
         if( sum(lst[:i+2]) <= sum(lst[-(i+1):]) ):
             return False
     for i in range(2, len(lst) // 2 + 1):
@@ -13,7 +12,6 @@ def is_special(sett):
         for tup in combinations(sett, i):
             if seen.get(sum(tup)): return False
             seen[sum(tup)] = True
-        # print(list(combinations(sett, i)))
     return True
 
 def next_suboptimum(sett):
@@ -22,9 +20,6 @@ def next_suboptimum(sett):
     result.add(mid)
     return result
 
-s6 = {11, 17, 20, 22, 23, 24}
-
-# add = lambda sett, n: {el+n for el in sett}
 combine = lambda lst1, lst2: [lst1[idx] + lst2[idx] for idx in range(len(lst1))]
 
 def search_n(distance, dimension):
@@ -60,77 +55,21 @@ f = [20, 32, 39, 40, 41, 43, 46] #(7, 10)
 g = [20, 31, 38, 39, 40, 42, 45] #(6, 16)
 
 def run(dimension, point=None):
-    # s6 = {11, 17, 20, 22, 23, 24}
-    # s5 = {6, 9, 11, 12, 13}
-    # l = [20, 31, 38, 39, 40, 42, 45]
+    optimum = {
+        7: {20, 31, 38, 39, 40, 42, 45},
+        6: {11, 17, 20, 22, 23, 24},
+        5: {6, 9, 11, 12, 13}
+    }
     if not point:
-        point = next_suboptimum({11, 17, 20, 22, 23, 24})
-    # while is_special(add(point, -1)):
-        # point = add(point, -1)
+        point = next_suboptimum(optimum[dimension-1])
     point = sorted(point)
-    d = sum(point)
-    i = 1
+    lowest_sum = sum(point)
+    distance = 1
     while True:
-        print(i)
-        a = points_distance_from(point, i, dimension)
-        b = [n for n in a if sum(n) < d]
-
-        for c in b:
+        print(distance)
+        for c in [n for n in points_distance_from(point, distance, dimension) if sum(n) < lowest_sum]:
             if is_special(c):
-                d = sum(c)
+                lowest_sum = sum(c)
                 print(c, sum(c))
                 run(dimension, c)
-        i += 1
-# [4]
-
-#
-# [4, 0]
-# [3, 1]
-# [2, 2]
-# [1, 3]
-# [0, 4]
-#
-# [4, 0, 0] [3, 0, 1] [2, 0, 2] [1, 0, 3] [0, 0, 4]
-# [3, 1, 0] [2, 1, 1] [1, 1, 2] [0, 1, 3]
-# [2, 2, 0] [1, 2, 1] [0, 2, 2]
-# [1, 3, 0] [0, 3, 1]
-# [0, 4, 0]
-#
-# [-4, 0, 0] [-3, 0, 1] [-2, 0, 2] [-1, 0, 3] [-0, 0, 4]
-# [-3, 1, 0] [-2, 1, 1] [-1, 1, 2] [-0, 1, 3]
-# [-2, 2, 0] [-1, 2, 1] [-0, 2, 2]
-# [-1, 3, 0] [-0, 3, 1]
-# [-0, 4, 0]
-#
-# [4, 0, 0] [3, 0, 1] [2, 0, 2] [1, 0, 3] [0, 0, 4]
-# [3, 1, 0] [2, 1, 1] [1, 1, 2] [0, 1, 3]
-# [2, 2, 0] [1, 2, 1] [0, 2, 2]
-# [1, 3, 0] [0, 3, 1]
-# [0, 4, 0]
-#
-# [-4, 0, 0] [-3, 0, 1] [-2, 0, 2] [-1, 0, 3] [-0, 0, 4]
-# [-3, 1, 0] [-2, 1, 1] [-1, 1, 2] [-0, 1, 3]
-# [-2, 2, 0] [-1, 2, 1] [-0, 2, 2]
-# [-1, 3, 0] [-0, 3, 1]
-# [-0, 4, 0]
-#
-#
-# # [4, 0, 0, 0] [3, 0, 1, 0] [2, 0, 2, 0] [1, 0, 3, 0] [0, 0, 4, 0]
-# # [3, 1, 0, 0] [2, 1, 1, 0] [1, 1, 2, 0] [0, 1, 3, 0]
-# # [2, 2, 0, 0] [1, 2, 1, 0] [0, 2, 2, 0]
-# # [1, 3, 0, 0] [0, 3, 1, 0]
-# # [0, 4, 0, 0]
-# #
-# # [3, 0, 0, 1] [2, 0, 1, 1] [1, 0, 2, 1] [0, 0, 3, 1]
-# # [2, 1, 0, 1] [1, 1, 1, 1] [0, 1, 2, 1]
-# # [1, 2, 0, 1] [0, 2, 1, 1]
-# # [0, 3, 0, 1]
-# #
-# # [2, 0, 0, 2] [1, 0, 1, 2] [0, 0, 2, 2]
-# # [1, 1, 0, 2] [0, 1, 1, 2]
-# # [0, 2, 0, 2]
-# #
-# # [1, 0, 0, 3] [0, 0, 1, 3]
-# # [0, 1, 0, 3]
-# #
-# # [0, 0, 0, 4]
+        distance += 1

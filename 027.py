@@ -1,4 +1,4 @@
-from euler_utils_primesandfactors import is_prime
+from primesandfactors import is_prime
 
 def run(limit):
     quadratic = lambda a, b, n: n**2 + a*n + b
@@ -29,4 +29,4 @@ def run(limit):
                     longest = t
                     best_a, best_b = a, b
     print(best_a, best_b, longest)
-    return best_a * best_b   
+    return best_a * best_b

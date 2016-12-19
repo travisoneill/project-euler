@@ -1,5 +1,5 @@
-from euler_utils_generators import triangular
-from euler_utils_primesandfactors import prime_factors, all_factors
+from generators import triangular
+from primesandfactors import prime_factors, all_factors
 
 def first_tri_num_with_more_than_n_factors(n):
     for tri_number in triangular(None):

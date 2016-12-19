@@ -1,4 +1,4 @@
-from euler_utils_primesandfactors import is_prime
+from primesandfactors import is_prime
 from math import sqrt
 
 hex_end = lambda n: 3*n**2 + 3*n + 1

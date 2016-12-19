@@ -1,4 +1,4 @@
-from euler_utils_primesandfactors import prime_factors
+from primesandfactors import prime_factors
 
 hilbert = lambda n: 4*n+1
 hilbert_square = lambda n: 16*n**2 + 8*n + 1

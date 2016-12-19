@@ -1,4 +1,4 @@
-from euler_utils_primesandfactors import is_prime
+from primesandfactors import is_prime
 from math import log
 
 def rotate(n):
