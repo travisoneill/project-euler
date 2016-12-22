@@ -1,58 +1,34 @@
-#IN PROGRESS
-from math import sqrt
-from functools import reduce
+from primesandfactors import prime_factors
 from itertools import combinations
+from functools import reduce
+from generators import primes
 
-def f_set(n):
-    i = 2
-    factors = set()
-    # prime = True
-    while i < int(sqrt(n)) + 1:
-        if n % i == 0:
-            # prime = False
-            factors.add(i)
-            n //= i
-        else:
-            i += 1
-    # if prime: return set()
-    if n > 1: factors.add(n)
-    return factors
+product = lambda collection: reduce(lambda x, y: x*y, collection)
+c_prod = lambda factors, n: set(map(product, combinations(factors, n)))
 
-def set_perm(s):
-    perms = set()
-    for n in range(2, len(s) + 1):
-        for m in combinations(s, n):
-            perms.add(reduce(lambda x, y: x*y, m))
-    # print(perms)
-    return perms
+cache = {}
+def phi(n):
+    f = prime_factors(n)
+    if len(f) == 1:
+        cache[n] = n-1
+        return n-1
+    family = product(set(f))
+    if family > 1 and family in cache:
+        cache[n] = cache[family] * n // family
+        return cache[n]
 
-def f_range(x, m):
-    s = f_set(x)
-    p = set_perm(s)
-    r = m - x
-    # a = r
-    for n in s:
-        d = m//n - x//n
-        # print(m, x, n)
-        # print(d)
-        r -= d
-    # print(x)
-    for n in p:
-        d = m//n - x//n
-        r += d
-    # print(r)
-    return r
+    f = set(f)
+    idx = n - 1
+    for i in range(len(f)):
+        multiplier = [-1, 1]
+        c = c_prod(f, i+1)
+        for x in c:
+            idx += (n//x - 1) * multiplier[i%2]
+    cache[n] = idx
+    return idx
 
 def run(n):
-    count = 0
-    for i in range(1, n):
-        count += f_range(i, n)
-    print(count)
-
-failures = {
-    60: 2,
-    84, 2,
-    90: 4,
-    120: 6,
-    150: 8,
-}
+    s = 0
+    for n in range(2, n+1):
+        s += phi(n)
+    return s
