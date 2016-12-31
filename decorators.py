@@ -49,6 +49,8 @@ def return_args(*args, **kwargs):
     pass
 
 
+def benchmark
+
 
 def test():
     state = False
