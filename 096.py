@@ -56,7 +56,7 @@ class Grid:
         if y == None: x, y = x
         self.data[x * self.cols + y] = value
 
-    def __str__(self):
+    def __str__(self, division=3, spacing=1):
         string = []
         division = 3
         spacing = 1
@@ -103,6 +103,7 @@ class Sudoku:
             c = (i // 9, i % 9)
             if self.board.get_val(c) != 0: continue
             p = list(self.possibilities(i))
+            if not p: return 'ERROR'
             if len(p) == 1:
                 state = True
                 self.board.set_val(p[0], c)
@@ -112,7 +113,10 @@ class Sudoku:
         return state
 
     def revert(self, data):
+        print(self)
+        print('REVERT')
         self.board.data = data
+        print(self)
 
     def guess(self):
         saved = self.board.data[:]
@@ -121,15 +125,18 @@ class Sudoku:
                 p = self.possibilities(i)
                 if len(p) == target_size:
                     c = (i // 9, i % 9)
+                    print('P:' + str(p))
                     for n in p:
+                        print(str(p), n)
                         self.board.set_val(n, c)
                         x = self.solve()
                         print(x)
-                        if x == 'ERROR' or 'IMPASSE':
+                        if x != 'SOLVED':
                             self.revert(saved)
                         else:
                             return
-                             
+                    return
+
 
 
     def board_valid(self):
@@ -162,16 +169,15 @@ class Sudoku:
         # print(self)
         def loop():
             while True:
-                if not self.step(): return 'IMPASSE'
-                state = ''
-                if not self.board_valid(): 'ERROR'
-                if not self.step(): return 'PROGRESS'
+                x = self.step()
                 if self.board_solved(): return 'SOLVED'
+                if not x: return 'IMPASSE'
+                if x == 'ERROR': return 'ERROR'
+                if not self.board_valid(): return 'ERROR'
+                if not self.step(): return 'PROGRESS'
                 # print('SOLVED!  score: {}'.format(self.score()))
 
         return loop()
-
-
 
 
     def score(self):
@@ -190,7 +196,7 @@ class Sudoku:
 
 
 grids = get_grids()
-g = Sudoku(grids[1])
+g = Sudoku(grids[2])
 #
 def run():
     for grid in grids:
