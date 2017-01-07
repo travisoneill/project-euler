@@ -56,10 +56,10 @@ class Grid:
         if y == None: x, y = x
         self.data[x * self.cols + y] = value
 
-    def __str__(self, division=3, spacing=1):
+    def __str__(self):
         string = []
-        division = 3
-        spacing = 1
+        division = 9
+        spacing = 2
         space = ' ' * spacing
         line = '-' * ( ( spacing + 1 ) * ( self.cols + self.cols // division + 1 ) - spacing )
         for row in range(self.rows):

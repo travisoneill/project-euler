@@ -1,44 +1,50 @@
 from math import sqrt
+from functools import reduce
+from benchmark import benchmark
+
 trip = lambda n: ( (a, int(sqrt(c**2 - a**2)), c) for a in range(1, int(0.3*n+1)) for c in range(int(0.4*n), int(0.5*n+1)) if (c**2 - a**2) % 1 == 0 and (a + sqrt(c**2 - a**2) + c) == n )
 trip2 = lambda n: { tuple(sorted([a, int(sqrt(c**2 - a**2)), c])) for a in range(1, int(1+3*n//10)) for c in range(int(4*n//10), int(1+5*n//10)) if (a + sqrt(c**2 - a**2) + c) == n }
 ptrip = lambda n: { (a, int(sqrt(c**2 - a**2)), c) for a in range(1, int(0.3*n+1)) for c in range(int(0.4*n), int(0.5*n+1)) if (c**2 - a**2) % 1 == 0 and (a + sqrt(c**2 - a**2) + c) == n and prim( (a, sqrt(c**2 - a**2), c) ) }
 
 from time import time
 def get_triples(limit):
-    t0 = time()
+    skip = []
     triples = set()
-    for i in range(limit*6):
+    t0 = time()
+    for i in range(0, limit, 2):
+        state = True
+        for n in skip:
+            if i % n == 0:
+                state = False
+                break
+        if not state: continue
+        if not i % 1000: print(i, time() - t0)
         for t in trip3(i):
             triples.add(t)
-    print(time() - t0)
+            skip.append(sum(t))
     return triples
 
+
+# @benchmark()
 def trip3(n):
     triples = set()
-    for a in range(1, int(1+3*n//10)):
-        for c in range(int(4*n//10), int(1+5*n//10)):
+    for a in range(1, int(1+3*n//10), 2):
+        for c in range(int(4*n//10)+1, int(1+5*n//10), 2):
             b = sqrt(c**2 - a**2)
             if a+b+c == n:
                 triples.add( tuple(sorted([a, int(b), c])) )
     return triples
 
-def test(n):
-    t0 = time()
-    for _ in range(n):
-        10 // 3
-    print(time() - t0)
-    t0 = time()
-    for _ in range(n):
-        10 / 3
-    print(time() - t0)
-    t0 = time()
-    for _ in range(n):
-        10.0 // 3.0
-    print(time() - t0)
-    t0 = time()
-    for _ in range(n):
-        10.0 / 3.0
-    print(time() - t0)
+
+def int_sqrt(n):
+    lo, hi = 1, n
+    while hi - lo > 1:
+        mid = (hi + lo) // 2
+        val = mid * mid
+        if val == n: return mid
+        if val > n: hi = mid
+        if val < n: lo = mid
+    return None
 
 def score(triple, m):
     a, b, c = triple
@@ -48,33 +54,6 @@ def score(triple, m):
     if b <= m:
         score += a // 2
     return score
-
-    # return a // 2 + max(a - b//2 + 1, 0)
-
-# { (3, 4, 5), (5, 12, 13), (8, 15, 17), (9, 12, 15), (6, 8, 10) }
-
-10 11 20
-9 12
-8 13
-7 14
-6 15
-5 16
-4 17
-3 18
-2 19
-1 20
-
-1 19 21
-2 18 21
-3 17
-4 16
-5 15
-6 14
-7 13
-8 12
-9 11
-10 10
-
 
 def run(n):
     total = 0
