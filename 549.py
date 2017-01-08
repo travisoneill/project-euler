@@ -3,6 +3,7 @@ from generators import primes, primes2, miller_rabin, mr2
 from benchmark import benchmark
 from collections import defaultdict
 from math import sqrt
+from numpy import array
 
 # TODO: Prime builder
 # lowest_factorial_multiple = lambda n: max([ k*v for k, v in prime_factors(n, 'dictionary').items() ])
@@ -11,16 +12,22 @@ lfm = lowest_factorial_multiple
 
 def pf(n):
     prime_factors = []
-    divisor = 2
+    x = 1
+    while not x % 2:
+        x *= 2
+        n //= 2
+    if x > 1: prime_factors.append(x)
+    divisor = 3
     while divisor * divisor <= n:
         x = 1
         while not n % divisor:
             x *= divisor
             n //= divisor
+        # print(x)
         if x > 1: prime_factors.append(x)
-        divisor += 1 + divisor % 2
-    # if n > 1: prime_factors.append(n)
-    return prime_factors
+        divisor += 1
+    if n > 1: prime_factors.append(n)
+    return prime_factors or [n]
 
 @benchmark()
 def s(n):
@@ -66,18 +73,27 @@ def build_cache(n):
 
 
 def build_cache2(n):
-    cache = {}
+    possible_factors = []
     limit = 1
-    while limit**(limit+1) < n:
-        limit += 1
-    print(limit)
-    for p in primes(limit):
-        cache[p] = {}
-        exp = 1
-        while p**exp <= n:
-            cache[p][exp] = f(exp, p)
-            exp += 1
-    return cache
+    for p in primes2( int(sqrt(n)) ):
+        x = p
+        while p <= n:
+            possible_factors.append( (p, lfm(p)) )
+            p *= x
+    print(possible_factors)
+    for p in primes2(n):
+        if p > int( sqrt(n) ): possible_factors.append( (p, p) )
+    print(possible_factors)
+    return sorted(possible_factors, key=lambda tup: tup[1])
+
+def score(lst, limit):
+    total = 0
+    for i in range(len(lst)):
+        a, b = lst[i]
+        x = min(i+1, limit // a)
+        total += b*x
+    return total
+
 
 @benchmark()
 def test(n, t=500000):
@@ -102,20 +118,57 @@ def run(n, t):
     # print(total)
     return total
 
+@benchmark()
 def run2(n):
-    d = {}
+    d = array([True]*(n+1))
     total = 0
     count = 0
-    for pr in primes2(n):
+    for pr in mr2(n+1):
         y = min(n//pr, pr)
-        total += pr * y
+        total += pr * (y-1)
         for x in range(1, y):
-            d[pr*x] = pr
-            count += 1
-    print(d)
-    print(count)
+            d[pr*x] = False
+        count += 1
+        if not count % 1000000: print(count // 1000000)
+        # total += pr*(y-1)
+    #         count += 1
+    # print(count)
+    # print(sum(d.values()))
+    # print(total)
+    print("HERE")
+    for i in range(2, n+1):
+        if not i % 100000: print(i)
+        if d[i]: total += lfm(i)
     print(total)
 
+def run3(n):
+    total = 0
+    split = int( (4*n)**(1/3) ) + 1
+    for i in range( 2, int(sqrt(n))+1 ):
+        total += lfm(i)
+    for i in range(int(sqrt(n))+1, n+1):
+        total += lfm( max( pf(i) ) )
+        if lfm( max( pf(i) ) ) != lfm(i): print(i)
+    return total
+
+@benchmark()
+def run4(n):
+    total = 0
+    for i in range( 2, 500000 ):
+        if is_prime(i):
+            total += i
+        else:
+            total += lfm(i)
+    for i in range(500000, n+1):
+        if miller_rabin(i, test=[2,7,61]):
+            total += i
+        else:
+            total += lfm(i)
+    return total
+
+
+
+{10**7: 5494373412573}
 
 
 def mrtest(x):

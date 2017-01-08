@@ -60,12 +60,9 @@ def miller_rabin(n, test=None):
         s += 1
         d //= 2
 
-    # print(s, d, a)
     for a in test:
         for i in range(s):
-            # x = a**( d * 2**i ) % n
             x = pow(a, d*2**i, n)
-            # print(x)
             if x == n - 1 or x == 1: break
             for _ in range(s):
                 x = x**2 % n
@@ -76,7 +73,7 @@ def miller_rabin(n, test=None):
     return True
 
 
-def mr2(n, t=12000000):
+def mr2(n, t=500000):
     test = get_test_list(n)
     for p in primes2(t): yield p
     for x in range(t+1, n, 2):
