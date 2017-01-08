@@ -73,7 +73,7 @@ def miller_rabin(n, test=None):
     return True
 
 
-def mr2(n, t=500000):
+def miller_rabin_range(n, t=500000):
     test = get_test_list(n)
     for p in primes2(t): yield p
     for x in range(t+1, n, 2):
