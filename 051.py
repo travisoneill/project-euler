@@ -1,6 +1,7 @@
 from itertools import combinations
 from collections import defaultdict
 from generators import primes2
+from benchmark import benchmark
 
 def replace(n, digit, replacement):
     digit = 10**digit
@@ -31,16 +32,13 @@ def prime_families(digits, replacements, target_length):
                 result[family][entry].append(prime)
                 if len(result[family][entry]) == target_length: return result[family][entry]
 
-# def search(dictionary, target_length):
-#     for k1, v1 in dictionary.items():
-#         for k2, v2 in v1.items():
-#             if len(v2) >= target_length:
-#                 print(k1, k2, v2)
-
+@benchmark()
 def run(target_length):
     digits = 1
+    possible = [n for n in range(9)] if target_length < 8 else [3, 6, 9]
     while True:
-        for replacements in range(1, digits):
+        for replacements in possible:
+            if replacements >= digits: break
             x = prime_families(digits, replacements, target_length)
             if x: return x
         digits += 1
