@@ -7,3 +7,10 @@ def int_sqrt(n):
         if val > n: hi = mid
         if val < n: lo = mid
     return lo
+
+def int_log10(n):
+    count = 0
+    while n:
+        count += 1
+        n //= 10
+    return count - 1
