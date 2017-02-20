@@ -78,3 +78,9 @@ def miller_rabin_range(n, t=500000):
     for p in primes2(t): yield p
     for x in range(t+1, n, 2):
         if miller_rabin(x, test): yield x
+
+def fibonacci(n):
+    a, b = 0, 1
+    for _ in range(n):
+        yield b
+        a, b = b, a + b
