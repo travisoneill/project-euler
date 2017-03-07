@@ -31,6 +31,7 @@ def frac_decompose(n, p=None):
             if i == 4 and inc == 1:
                 inc = 10
         if array[-1] == array[0] * 2:
+            print(array)
             return len(array) - 1
 
 def digit(num, d):
@@ -82,13 +83,13 @@ def run(n):
             else:
                 even_primes.add(i)
         else:
-            if is_possibly_even_period(i, even_primes):
+            if is_possibly_odd_period(i, even_primes):
                 x = frac_decompose(i)
                 if x % 2:
                     odds += 1
     return odds
 
-def is_possibly_even_period(n, evens):
+def is_possibly_odd_period(n, evens):
     if is_perfect_square(n-1): return True
     prime_factors = set()
     divisor = 3

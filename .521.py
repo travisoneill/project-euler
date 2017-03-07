@@ -56,8 +56,12 @@ def m_primes(n):
     f = set(prime_factors(n))
     m = []
     for i in range(1, n):
-        if not set(prime_factors(i)) & f:
+        for p in f:
+            if not i % p:
+                break
+        else:
             m.append(i)
+        # if not set(prime_factors(i)) & f:
     return m
 
 def generate(n, limit):
@@ -83,7 +87,7 @@ def g2(n, limit):
         cycle_length *= p
     if n == 3: cycle_length = 2
     cycle = m_primes(cycle_length)
-    print(cycle, cycle_length)
+    # print(cycle, cycle_length)
     for i in range(n, limit+1, n):
         if i % cycle_length in cycle:
             yield i
@@ -106,6 +110,52 @@ def phi(n, limit=None):
         for x in c:
             idx += (n//x - 1) * multiplier[i%2]
     return idx
+
+def g3(n, limit):
+    yield n
+    primes = [ p for p in primes2(limit//n) if p >= n ]
+    product = reduce( lambda x, y: x * y, primes2(n) )
+    max_exp = 1
+    while n**max_exp < limit:
+        max_exp += 1
+    for exp in range(1, max_exp):
+        for exp2 in range(1, max_exp):
+            for p in primes:
+                x = n**exp * p**exp2
+                if  x > limit: break
+                yield x
+
+def int_log(b, n):
+    l = -1
+    while n:
+        l += 1
+        n //= b
+    return l
+
+il = int_log
+
+def make(n):
+    p = product(primes2(n-1))
+    return list(map(lambda x: x*n, m_primes(p)))
+
+def diffs(arr):
+    return [arr[i+1] - arr[i] for i in range(len(arr)-1)]
+
+def run(n):
+    prod = 1
+    for p in primes2(1000):
+        prod *= p
+        if prod > n: break
+        print(p, phi(prod))
+
+def run2(num):
+    n = 1
+    for p in primes2(num):
+        n *= p
+        ph = phi(n)
+        print(p, ph, prime_factors(ph))
+
+
 
 def subc(sett):
     for n in range(2**(len(s))):

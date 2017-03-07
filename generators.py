@@ -20,7 +20,6 @@ def primes(limit):
             yield i
         i += 2
 
-
 def primes2(limit):
     '''Generates prime numbers up to limit.  Pass 'None' as argument to infinite loop'''
     if limit < 4:
