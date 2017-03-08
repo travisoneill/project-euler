@@ -1,4 +1,5 @@
 from collections import Counter
+from simplemath import int_sqrt
 
 def is_prime(n):
     '''Returns bool True if prime False if not.'''
@@ -42,20 +43,36 @@ def all_factors(n, data_type='list', duplicate_sqrt=False, include_self=False):
         divisor += 1
     return data_structures[data_type](sorted(factors))
 
+def are_coprime(n1, n2):
+    if n1 == 1 or n2 == 1: return True
+    small = min(n1, n2)
+    large = max(n1, n2)
+    if not large % small: return False
+    for p in primes2(small // 2):
+        if not n1 % p and not n2 % p: return False
+    return True
+
+def primes2(limit):
+    '''Generates prime numbers up to limit.  Pass 'None' as argument to infinite loop'''
+    if limit < 4:
+        sieve = [2, 3]
+    else:
+        sieve = [ n for n in primes2( int_sqrt(limit) ) ]
+    # print(sieve)
+    for prime in sieve: yield prime
+    i = sieve[-1] + 2
+    while i <= limit:
+        # print(i, limit)
+        for prime in sieve:
+            if not i % prime: break
+            if prime * prime > i:
+                yield i
+                break
+        else:
+            yield i
+        i += 2
 
 check = [ n for n in range(100) if is_prime(n) ]
-# def fast_prime(n):
-#     if n < 1000:
-#         return is_prime(n)
-#     # for p in check:
-#         # if not n % p: return False
-#     else:
-#         return miller_rabin(n)
-#
-#     # if n < 100000:
-#         # return is_prime(n)
-#     # else:
-
 def get_test_list(n):
     if n < 2047: return [2]
     if n < 1373653: return [2, 3]

@@ -1,7 +1,5 @@
-# from math import sqrt
 from benchmark import benchmark
 from simplemath import is_perfect_square, int_sqrt, square_root, int_log10
-# from primesandfactors import prime_factors
 
 def continued_frac_sqrt(n, p=None):
     '''returns array from of the repeating sequence of the continued fraction

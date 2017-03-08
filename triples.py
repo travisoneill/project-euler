@@ -95,6 +95,37 @@ def prim(trip):
             return False
     return True
 
+
+def euclid(limit):
+    trips = []
+    for n in range(1, limit):
+        for m in range(n+1, limit):
+            a = m*m - n*n
+            b = 2*m*n
+            c = m*m + n*n
+            trips.append( (a,b,c) )
+    return trips
+
+def euclid_sum(m, n):
+    return 2 * m * (m + n)
+
+def side_length_triples(limit):
+    euclid_max = 1
+    while euclid_sum(euclid_max, 1) < limit:
+        euclid_max += 1
+    return euclid_max
+
+sl = side_length_triples
+
+
+e = euclid
+
+def eu(m, n):
+    a = m*m - n*n
+    b = 2*m*n
+    c = m**2 + n**2
+    print(a, b, c, a+b+c)
+
 d = {
     1716: [ (195, 748, 773), (364, 627, 725) ],
     2652: [ (51, 1300, 1301), (340, 1131, 1181) ],
