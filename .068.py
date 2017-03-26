@@ -8,6 +8,7 @@ def possibilities_for_ring_size(n):
     inner_ring = combinations(nums, n)
     seen = set()
     for ring in inner_ring:
+        if not valid(ring): continue
         outer = tuple( x for x in nums if x not in ring )
         for o in permutations(outer):
             for r in permutations(ring):
@@ -15,8 +16,10 @@ def possibilities_for_ring_size(n):
                 if t:
                     p = print_format(r, o)
                     if p not in seen:
-                        print(p)
+                        print(ring, outer, p)
                     seen.add(p)
+
+p = possibilities_for_ring_size
 
 def print_format(ring, outer):
     arr = []
@@ -30,8 +33,17 @@ def print_format(ring, outer):
     for i in range(len(arr)):
         idx = (start_idx + i) % len(arr)
         for n in arr[idx]:
-            result += str(n)
+            result += str(n) + ' '
     return result
+
+def valid(ring):
+    nums = set()
+    for idx in range(len(ring)):
+        nxt = (idx + 1) % len(ring)
+        s = ring[idx] + ring[nxt]
+        if s in nums: return False
+        nums.add(s)
+    return True
 
 def test(center, outer):
     summ = 0
@@ -41,3 +53,8 @@ def test(center, outer):
         summ = summ or t
         if t != summ: return False
     return summ
+
+
+
+# 1 2 3 4 6 - 3 5 7 10 7
+# 5 7 8 9 10
