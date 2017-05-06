@@ -83,3 +83,9 @@ def fibonacci(n):
     for _ in range(n):
         yield b
         a, b = b, a + b
+
+def fibonacci2():
+    a, b = 0, 1
+    while True:
+        yield b
+        a, b = b, a + b

@@ -2,7 +2,7 @@ from math import sqrt
 from benchmark import benchmark
 from simplemath import is_perfect_square
 
-def heron(a, b, c):
+def heron_area_squared(a, b, c):
     p = (a + b + c) // 2
     return p * (p - a) * (p - b) * (p - c)
 
@@ -47,11 +47,11 @@ def test(limit):
     a = 1
     while a < limit:
         if a % 2 == 0:
-            h1 = heron(a, a+1, a+1)
+            h1 = heron_area_squared(a, a+1, a+1)
             if is_perfect_square(h1):
                 print(a, a+1, a+1, h1, (3*a+2)/2)
         else:
-            h2 = heron(a, a, a+1)
+            h2 = heron_area_squared(a, a, a+1)
             if is_perfect_square(h2):
                 print(a, a, a+1, h2, (3*a+1)/2)
         a += 1
@@ -65,9 +65,8 @@ def test3(limit):
     ratio = 3
     while matches[-1] < limit:
         if test % 2 == 0:
-            h1 = heron(test, test+1, test+1)
+            h1 = heron_area_squared(test, test+1, test+1)
             if is_perfect_square(h1):
-                # print(test, test+1, test+1, h1)
                 perimeter = test + test+1 + test+1
                 ratio = perimeter / matches[-1]
                 matches.append(perimeter)
@@ -75,11 +74,10 @@ def test3(limit):
                 interval = 1
                 continue
         else:
-            h2 = heron(test, test, test+1)
+            h2 = heron_area_squared(test, test, test+1)
             if is_perfect_square(h2):
-                # print(test, test, test+1, h2)
                 perimeter = test + test + test+1
-                ratio = perimeter / matches[-1]
+                # ratio = perimeter / matches[-1]
                 matches.append(perimeter)
                 test = int(test * ratio)
                 interval = 1
@@ -87,4 +85,31 @@ def test3(limit):
         test += interval * direction
         interval += 1
         direction *= -1
+    return sum(matches[:-1])
+
+def area(s1, s2, s3):
+    c = s2
+    a = s3 // 2 if s1 == s2 else s1 // 2
+    b  = sqrt(c*c - a*a)
+    return b * a
+
+
+
+@benchmark()
+def test4(limit):
+    matches = [16]
+    side1 = 6
+    direction = 1
+    ratio = 2 + sqrt(3)
+    while matches[-1] < limit:
+        side2 = side1 if side1 % 2 == 1 else side1 + 1
+        area_squared = heron_area_squared(side1, side2, side1 + 1)
+        print(area_squared)
+        if is_perfect_square(area_squared):
+            perimeter = side1 + side2 + side1 + 1
+            matches.append(perimeter)
+            side1 = int(side1 * ratio)
+            direction *= -1
+            continue
+        side1 += direction
     return sum(matches[:-1])

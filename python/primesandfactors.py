@@ -1,5 +1,6 @@
 from collections import Counter
 from simplemath import int_sqrt
+from functools import reduce
 
 def is_prime(n):
     '''Returns bool True if prime False if not.'''
@@ -109,3 +110,12 @@ def test(n):
     for i in range(n):
         if is_prime(i) != fast_prime(i):
             print(i)
+
+def least_common_mult(n1, n2):
+    n1, n2 = sorted([n1, n2])
+    factors = prime_factors(n1)
+    mult = n1 * n2
+    for f in factors:
+        if not n2 % f:
+            mult //= f
+    return mult
