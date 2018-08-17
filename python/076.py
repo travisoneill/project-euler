@@ -1,15 +1,42 @@
 from benchmark import benchmark
 
-def nx(n, m):
+# def nx(n, m):
+#     if m == 2:
+#         return n // 2 + 1
+#     else:
+#         return sum([nx(n - i, m - 1) for i in reversed(range(0, n+1, m))])
+#
+#
+# def nx2(n, m):
+#     if m == 2:
+#         return n // 2 + 1
+#     else:
+#         sm = 0
+#         for i in reversed(range(0, n+1, m)):
+#             sm += nx2(n - i, m - 1)
+#         return sm
+
+from collections import defaultdict
+cache = defaultdict(dict)
+def nx3(n, m):
+    cached = cache[n].get(m)
+    if cached:
+        return cached
     if m == 2:
         return n // 2 + 1
     else:
-        return sum([nx(n - i, m - 1) for i in reversed(range(0, n+1, m))])
+        sm = 0
+        for i in reversed(range(0, n+1, m)):
+            res = nx3(n - i, m - 1)
+            cache[n-i][m-1] = res
+            sm += res
+        return sm
 
 
 @benchmark()
 def number_of_sumnations(n):
-    return nx(n, n-1)
+    return nx3(n, n-1)
+
 
 if __name__ == '__main__':
     number_of_sumnations(100)
