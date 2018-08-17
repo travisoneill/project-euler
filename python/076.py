@@ -3,8 +3,6 @@ from benchmark import benchmark
 def nx(n, m):
     if m == 2:
         return n // 2 + 1
-    if m == 3:
-        return nn3(n)
     else:
         return sum([nx(n - i, m - 1) for i in reversed(range(0, n+1, m))])
 
@@ -12,6 +10,9 @@ def nx(n, m):
 @benchmark()
 def number_of_sumnations(n):
     return nx(n, n-1)
+
+if __name__ == '__main__':
+    number_of_sumnations(100)
 
 # def num_ways_to_make(value, coin_set=None, prnt=False):
 #     if value < 2: return 0
