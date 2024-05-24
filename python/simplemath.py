@@ -19,14 +19,7 @@ def digital_sum(n):
         n //= 10
     return dig_sum    
 
-def e(p):
-    x = 0
-    y = 10**p
-    for i in range(p):
-        x += l2(y, factorial(i), p)
-    while int_log10(x) > p:
-        x //= 10
-    return x
+
 # def square_root(n, precision):
 #     if n < 0: raise "Sorry, I don't do complex numbers!"
 #     if n == 0: return 0

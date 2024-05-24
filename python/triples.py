@@ -18,7 +18,7 @@ def get_triples(limit):
                 state = False
                 break
         if not state: continue
-        if not i % 1000: print(i, time() - t0)
+        # if not i % 1000: print(i, time() - t0)
         for t in trip3(i):
             triples.add(t)
             skip.append(sum(t))

@@ -75,12 +75,12 @@ def primes2(limit):
 
 check = [ n for n in range(100) if is_prime(n) ]
 def get_test_list(n):
-    if n < 2047: return [2]
-    if n < 1373653: return [2, 3]
-    if n < 9080191: return [31, 73]
-    if n < 25326001: return [2, 3, 5]
-    if n < 4759123141: return [2, 7, 61]
-    return [2, 3, 5, 7, 11]
+    if n < 2047: return (2,)
+    if n < 1373653: return (2, 3)
+    if n < 9080191: return (31, 73)
+    if n < 25326001: return (2, 3, 5)
+    if n < 4759123141: return (2, 7, 61)
+    return (2, 3, 5, 7, 11)
 
 def miller_rabin(n):
     if n < 100:
@@ -94,22 +94,19 @@ def miller_rabin(n):
         s += 1
         d //= 2
 
-    for a in test:
-        for i in range(s):
-            x = pow(a, d*2**i, n)
+    for idx, a in enumerate(test):
+        p = 1
+        for idx2 in range(s):
+            x = pow(a, d*p, n)
             if x == n - 1 or x == 1: break
             for _ in range(s):
-                x = x**2 % n
+                x = x*x % n
                 if x == 1: return False
                 if x == n - 1: break
             else:
                 return False
+        p <<= 1
     return True
-
-def test(n):
-    for i in range(n):
-        if is_prime(i) != fast_prime(i):
-            print(i)
 
 def least_common_mult(n1, n2):
     n1, n2 = sorted([n1, n2])
